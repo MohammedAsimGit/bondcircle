@@ -33,6 +33,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.3.0] - 2026-08-02
+
+### Added
+
+- Database foundation (Sprint 03)
+- `packages/database` shared package with Prisma ORM
+- Prisma schema with 7 models: User, Profile, Friendship, Memory, MemoryParticipant, Reminder, Session
+- 5 enum types: UserStatus, FriendshipStatus, Visibility, ParticipantRole, ReminderStatus
+- Database client singleton with connection management
+- Seed script with development test data
+- Docker Compose for local PostgreSQL 16
+- Database scripts: db:generate, db:push, db:migrate, db:seed, db:studio, db:reset
+- UUID v4 primary keys on all models
+- Strategic indexing on foreign keys and query fields
+
+### Changed
+
+- Updated `turbo.json` with database pipeline tasks
+- Updated root `package.json` with database convenience scripts
+- Updated `.env.example` with `DATABASE_URL` and `DATABASE_DIRECT_URL`
+
+---
+
 ## [0.2.0] - 2026-08-01
 
 ### Added
@@ -69,13 +92,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-| Version | Date | Description |
-|---|---|---|
-| 0.1.0 | 2026-08-01 | Initial repository setup |
-| 0.2.0 | 2026-08-01 | Development environment setup |
-| 1.0.0 | TBD | Foundation release |
-| 1.1.0 | TBD | Friends MVP |
-| 2.0.0 | TBD | Friends Enhanced |
-| 3.0.0 | TBD | Couples Mode |
-| 4.0.0 | TBD | Families Mode |
-| 5.0.0 | TBD | Platform Complete |
+| Version | Date       | Description                   |
+| ------- | ---------- | ----------------------------- |
+| 0.1.0   | 2026-08-01 | Initial repository setup      |
+| 0.2.0   | 2026-08-01 | Development environment setup |
+| 0.3.0   | 2026-08-02 | Database foundation           |
+| 1.0.0   | TBD        | Foundation release            |
+| 1.1.0   | TBD        | Friends MVP                   |
+| 2.0.0   | TBD        | Friends Enhanced              |
+| 3.0.0   | TBD        | Couples Mode                  |
+| 4.0.0   | TBD        | Families Mode                 |
+| 5.0.0   | TBD        | Platform Complete             |

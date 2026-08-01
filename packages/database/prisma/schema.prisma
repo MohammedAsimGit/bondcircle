@@ -1,0 +1,185 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_DIRECT_URL")
+}
+
+// ============================================
+// Enums
+// ============================================
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+enum Visibility {
+  PRIVATE
+  FRIENDS
+  PUBLIC
+}
+
+enum ParticipantRole {
+  CREATOR
+  PARTICIPANT
+  VIEWER
+}
+
+enum ReminderStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+// ============================================
+// Models
+// ============================================
+
+model User {
+  id            String     @id @default(uuid()) @db.Uuid
+  email         String     @unique
+  phone         String?    @unique
+  passwordHash  String
+  emailVerified DateTime?
+  phoneVerified DateTime?
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  deletedAt     DateTime?
+
+  profile       Profile?
+  sessions      Session[]
+  friendships   Friendship[] @relation("UserFriendships")
+  friendOf      Friendship[] @relation("FriendOf")
+  createdMemories Memory[]
+  memories      MemoryParticipant[]
+  reminders     Reminder[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([status])
+}
+
+model Profile {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @unique @db.Uuid
+  username  String   @unique
+  firstName String?
+  lastName  String?
+  avatar    String?
+  bio       String?
+  birthday  DateTime?
+  timezone  String   @default("UTC")
+  locale    String   @default("en")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([username])
+}
+
+model Friendship {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  friendId  String           @db.Uuid
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  user      User             @relation("UserFriendships", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User             @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+  @@index([status])
+}
+
+model Memory {
+  id         String     @id @default(uuid()) @db.Uuid
+  creatorId  String     @db.Uuid
+  title      String
+  content    String?
+  memoryDate DateTime?
+  location   String?
+  visibility Visibility @default(FRIENDS)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  deletedAt  DateTime?
+
+  creator      User                @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  participants MemoryParticipant[]
+  reminders    Reminder[]
+
+  @@index([creatorId])
+  @@index([memoryDate])
+  @@index([visibility])
+}
+
+model MemoryParticipant {
+  id        String          @id @default(uuid()) @db.Uuid
+  memoryId  String          @db.Uuid
+  userId    String          @db.Uuid
+  role      ParticipantRole @default(PARTICIPANT)
+  createdAt DateTime        @default(now())
+
+  memory    Memory          @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([memoryId, userId])
+  @@index([memoryId])
+  @@index([userId])
+}
+
+model Reminder {
+  id        String         @id @default(uuid()) @db.Uuid
+  memoryId  String         @db.Uuid
+  userId    String         @db.Uuid
+  remindAt  DateTime
+  status    ReminderStatus @default(PENDING)
+  sentAt    DateTime?
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  memory    Memory         @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([memoryId])
+  @@index([remindAt])
+  @@index([status])
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
+}
