@@ -73,6 +73,9 @@ prisma/migrations/
 # Turborepo
 .turbo/
 
+# Vercel
+.vercel/
+
 # Next.js
 .next/
 
