@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Coverage
+coverage/
+
+# Turborepo
+.turbo/
+
+# Generated files
+*.generated.*
+
+# Config files
+*.config.js
+*.config.ts
+*.config.mjs
+*.config.cjs

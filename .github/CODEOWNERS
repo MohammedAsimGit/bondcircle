@@ -1,0 +1,23 @@
+# BondCircle Code Owners
+# This file defines code ownership for automatic review assignments
+
+# Default owners for everything in the repo
+* @MohammedAsimGit
+
+# Documentation
+docs/ @MohammedAsimGit
+
+# GitHub configuration
+.github/ @MohammedAsimGit
+
+# Frontend (when created)
+# apps/web/ @frontend-team
+# packages/ui/ @frontend-team
+
+# Backend (when created)
+# apps/api/ @backend-team
+# packages/database/ @backend-team
+
+# DevOps (when created)
+# config/ @devops-team
+# scripts/ @devops-team
