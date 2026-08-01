@@ -12,11 +12,12 @@
 - [x] Repository Initialization (Sprint 01)
 - [x] Development Environment Setup (Sprint 02)
 - [x] Database Foundation (Sprint 03)
+- [x] Authentication Foundation (Sprint 04)
 
 ### Upcoming
 
-- [ ] Backend Foundation (Sprint 04)
 - [ ] Frontend Foundation (Sprint 05)
+- [ ] Backend Foundation (Sprint 06)
 
 ---
 
@@ -31,7 +32,7 @@
 | Sprint 01 | Repository Initialization     | Complete |
 | Sprint 02 | Development Environment Setup | Complete |
 | Sprint 03 | Database Foundation           | Complete |
-| Sprint 04 | Backend Foundation            | Pending  |
+| Sprint 04 | Authentication Foundation     | Complete |
 | Sprint 05 | Frontend Foundation           | Pending  |
 | Sprint 06 | Authentication System         | Pending  |
 | Sprint 07 | User Management               | Pending  |

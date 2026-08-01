@@ -12,10 +12,13 @@
     "clean": "rm -rf .next .turbo node_modules"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "better-auth": "^1.6.25",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "styled-jsx": "^5.1.0"
+    "styled-jsx": "^5.1.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

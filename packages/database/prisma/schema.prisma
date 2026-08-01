@@ -49,14 +49,17 @@ enum ReminderStatus {
 }
 
 // ============================================
-// Models
+// Models — Better Auth Compatible
 // ============================================
 
 model User {
   id            String     @id @default(uuid()) @db.Uuid
+  name          String
   email         String     @unique
+  username      String     @unique
   phone         String?    @unique
   passwordHash  String
+  image         String?
   emailVerified DateTime?
   phoneVerified DateTime?
   status        UserStatus @default(ACTIVE)
@@ -64,23 +67,75 @@ model User {
   updatedAt     DateTime   @updatedAt
   deletedAt     DateTime?
 
-  profile       Profile?
-  sessions      Session[]
-  friendships   Friendship[] @relation("UserFriendships")
-  friendOf      Friendship[] @relation("FriendOf")
+  profile        Profile?
+  accounts       Account[]
+  sessions       Session[]
+  friendships    Friendship[] @relation("UserFriendships")
+  friendOf       Friendship[] @relation("FriendOf")
   createdMemories Memory[]
-  memories      MemoryParticipant[]
-  reminders     Reminder[]
+  memories       MemoryParticipant[]
+  reminders      Reminder[]
 
   @@index([email])
+  @@index([username])
   @@index([phone])
   @@index([status])
+}
+
+model Account {
+  id                     String    @id @default(uuid()) @db.Uuid
+  accountId              String
+  providerId             String
+  userId                 String    @db.Uuid
+  accessToken            String?
+  refreshToken           String?
+  idToken                String?
+  accessTokenExpiresAt   DateTime?
+  refreshTokenExpiresAt  DateTime?
+  scope                  String?
+  password               String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, providerId])
+  @@index([userId])
+  @@index([providerId])
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Verification {
+  id         String   @id @default(uuid()) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@index([identifier])
+  @@index([expiresAt])
 }
 
 model Profile {
   id        String   @id @default(uuid()) @db.Uuid
   userId    String   @unique @db.Uuid
-  username  String   @unique
   firstName String?
   lastName  String?
   avatar    String?
@@ -91,9 +146,9 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([username])
+  @@index([userId])
 }
 
 model Friendship {
@@ -104,8 +159,8 @@ model Friendship {
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
-  user      User             @relation("UserFriendships", fields: [userId], references: [id], onDelete: Cascade)
-  friend    User             @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
+  user   User @relation("UserFriendships", fields: [userId], references: [id], onDelete: Cascade)
+  friend User @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
 
   @@unique([userId, friendId])
   @@index([userId])
@@ -141,8 +196,8 @@ model MemoryParticipant {
   role      ParticipantRole @default(PARTICIPANT)
   createdAt DateTime        @default(now())
 
-  memory    Memory          @relation(fields: [memoryId], references: [id], onDelete: Cascade)
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memory Memory @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([memoryId, userId])
   @@index([memoryId])
@@ -159,27 +214,11 @@ model Reminder {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
 
-  memory    Memory         @relation(fields: [memoryId], references: [id], onDelete: Cascade)
-  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  memory Memory @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([memoryId])
   @@index([remindAt])
   @@index([status])
-}
-
-model Session {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @db.Uuid
-  token     String   @unique
-  ipAddress String?
-  userAgent String?
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([token])
-  @@index([userId])
-  @@index([expiresAt])
 }

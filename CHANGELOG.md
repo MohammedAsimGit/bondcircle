@@ -33,6 +33,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] - 2026-08-02
+
+### Added
+
+- Authentication Foundation (Sprint 04)
+- Better Auth integration with Prisma adapter
+- Email/password authentication with username support
+- Zod validation schemas for registration, login, and password reset
+- API catch-all route for Better Auth (`/api/auth/[...all]`)
+- Login page with email/password form
+- Register page with username, name, email, password fields
+- Forgot password page with email input
+- Reset password page with token-based password reset
+- Route protection middleware (protected routes, auth routes)
+- Error handling utilities (`lib/api-response.ts`)
+- User navigation component with session display
+- Logout button component
+- Prisma schema updates: Added `Account`, `Verification` models
+- Added `name`, `username`, `image` fields to User model
+- Added `BETTER_AUTH_SECRET` and `NEXT_PUBLIC_APP_URL` environment variables
+
+### Changed
+
+- Updated Prisma schema for Better Auth compatibility
+- Updated `.env.example` with new auth variables
+
+---
+
 ## [0.3.0] - 2026-08-02
 
 ### Added
@@ -97,6 +125,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | 0.1.0   | 2026-08-01 | Initial repository setup      |
 | 0.2.0   | 2026-08-01 | Development environment setup |
 | 0.3.0   | 2026-08-02 | Database foundation           |
+| 0.4.0   | 2026-08-02 | Authentication foundation     |
 | 1.0.0   | TBD        | Foundation release            |
 | 1.1.0   | TBD        | Friends MVP                   |
 | 2.0.0   | TBD        | Friends Enhanced              |
