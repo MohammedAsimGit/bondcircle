@@ -2,18 +2,23 @@
 
 ## Purpose
 
-This directory contains setup automation scripts.
+This directory contains setup automation scripts for development environment initialization.
 
-## Scripts
+## Current State
 
-- setup.sh / setup.ps1
-- install.sh / install.ps1
-- configure.sh / configure.ps1
+Development setup is currently handled via standard npm workflows:
 
-## Future Sprint
+```bash
+git clone https://github.com/MohammedAsimGit/bondcircle.git
+cd bondcircle
+npm install
+npm run dev
+```
 
-This directory will be populated in **Sprint 02 — Development Environment Setup**.
+## Future Sprints
+
+Automated setup scripts will be added when the project requires environment-specific provisioning (database seeding, service initialization, etc.).
 
 ## Status
 
-**Placeholder** — Awaiting Sprint 02
+**Active** â€” Manual setup via npm; scripts deferred to future sprints

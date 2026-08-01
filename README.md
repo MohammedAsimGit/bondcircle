@@ -63,12 +63,11 @@ All project documentation is available in the `docs/` directory:
 
 ### Prerequisites
 
-- Node.js 20.11.0 or higher
+- Node.js 20.11.0 or higher (`cat .nvmrc` to confirm)
 - npm 10.0.0 or higher
-- PostgreSQL 15+ (for database)
-- Redis 7+ (for caching)
+- Git
 
-### Installation
+### Quick Start
 
 ```bash
 # Clone the repository
@@ -80,24 +79,52 @@ cd bondcircle
 # Install dependencies
 npm install
 
-# Start development
+# Start the development server
 npm run dev
 ```
 
+The web application will be available at [http://localhost:3000](http://localhost:3000).
+
+### Developer Onboarding
+
+**Step 1 — Clone and install**
+
+```bash
+git clone https://github.com/MohammedAsimGit/bondcircle.git
+cd bondcircle
+npm install
+```
+
+**Step 2 — Start developing**
+
+```bash
+npm run dev      # Start Next.js dev server at localhost:3000
+```
+
+**Step 3 — Before committing**
+
+```bash
+npm run lint     # Check for lint errors
+npm run build    # Verify production build succeeds
+```
+
+The pre-commit hook runs `lint-staged` automatically, formatting and linting staged files.
+
 ### Available Scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start development servers |
-| `npm run build` | Build all packages |
-| `npm run lint` | Lint all packages |
-| `npm run typecheck` | Type check all packages |
-| `npm run test` | Run all tests |
-| `npm run format` | Format code with Prettier |
+| Script              | Description               |
+| ------------------- | ------------------------- |
+| `npm run dev`       | Start development servers |
+| `npm run build`     | Build all packages        |
+| `npm run lint`      | Lint all packages         |
+| `npm run typecheck` | Type check all packages   |
+| `npm run test`      | Run all tests             |
+| `npm run format`    | Format code with Prettier |
+| `npm run clean`     | Remove build artifacts    |
 
 ## Project Status
 
-BondCircle is currently in the **Pre-Development** phase. All documentation and architecture are complete. Implementation begins with Sprint 01.
+BondCircle is currently in the **Foundation** phase. Development environment is fully configured.
 
 ### Current Progress
 
@@ -105,8 +132,9 @@ BondCircle is currently in the **Pre-Development** phase. All documentation and 
 - ✅ Architecture Design
 - ✅ Sprint Planning (Book 20)
 - ✅ Engineering Operations (Book 20 Part E)
-- 🔄 Repository Initialization (Sprint 01)
-- ⏳ Development Environment (Sprint 02)
+- ✅ Engineering Control Center (ECC)
+- ✅ Repository Initialization (Sprint 01)
+- ✅ Development Environment (Sprint 02)
 - ⏳ Database Foundation (Sprint 03)
 - ⏳ Backend Foundation (Sprint 04)
 - ⏳ Frontend Foundation (Sprint 05)

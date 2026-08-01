@@ -2,19 +2,19 @@
 
 ## Purpose
 
-This directory contains environment variable templates.
+This directory contains environment variable templates for different deployment environments.
 
 ## Contents
 
-- .env.example
-- .env.development
-- .env.staging
-- .env.production
+Environment files are currently managed at the repository root:
 
-## Future Sprint
+- `.env` â€” Local development environment (not committed)
+- `.env.example` â€” Template with placeholder values
 
-This directory will be populated in **Sprint 02 — Development Environment Setup**.
+## Future Sprints
+
+Per-environment templates (`.env.development`, `.env.staging`, `.env.production`) will be added when deployment pipelines are configured.
 
 ## Status
 
-**Placeholder** — Awaiting Sprint 02
+**Active** â€” Root-level env management via `.env.example`

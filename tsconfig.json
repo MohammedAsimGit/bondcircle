@@ -16,22 +16,12 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@app/*": ["./apps/web/src/*"],
-      "@ui/*": ["./packages/ui/src/*"],
-      "@utils/*": ["./packages/utils/src/*"],
-      "@types/*": ["./packages/types/src/*"],
-      "@config/*": ["./packages/config/src/*"],
-      "@database/*": ["./packages/database/src/*"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["src", "apps", "packages"],
+  "include": ["apps", "packages"],
   "exclude": ["node_modules", "dist", "build", ".next", "coverage"]
 }

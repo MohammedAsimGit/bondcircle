@@ -2,18 +2,19 @@
 
 ## Purpose
 
-This directory contains linting configuration.
+This directory contains shared linting configuration and custom rules.
 
-## Configuration
+## Current State
 
-- ESLint configs
-- Prettier configs
-- Stylelint configs
+Linting configuration is managed at two levels:
 
-## Future Sprint
+- **Root:** `.eslintrc.js`, `.prettierrc`, `.eslintignore`, `.prettierignore` â€” TypeScript + Prettier baseline
+- **Per-workspace:** `apps/web/.eslintrc.json` â€” React + Hooks + TypeScript + Prettier
 
-This directory will be populated in **Sprint 02 — Development Environment Setup**.
+## Future Sprints
+
+Custom ESLint rules, shared linting presets, and stylelint configuration will be added as the codebase grows.
 
 ## Status
 
-**Placeholder** — Awaiting Sprint 02
+**Active** â€” Root + workspace linting configured; shared presets deferred
