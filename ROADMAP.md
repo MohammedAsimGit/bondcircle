@@ -1,6 +1,6 @@
 # BondCircle Roadmap
 
-## Current Phase: Pre-Development
+## Current Phase: Foundation
 
 ### Completed
 
@@ -9,14 +9,11 @@
 - [x] Sprint Planning (Book 20)
 - [x] Engineering Operations (Book 20 Part E)
 - [x] Engineering Control Center (ECC)
-
-### In Progress
-
-- [ ] Repository Initialization (Sprint 01)
+- [x] Repository Initialization (Sprint 01)
+- [x] Development Environment Setup (Sprint 02)
 
 ### Upcoming
 
-- [ ] Development Environment (Sprint 02)
 - [ ] Database Foundation (Sprint 03)
 - [ ] Backend Foundation (Sprint 04)
 - [ ] Frontend Foundation (Sprint 05)
@@ -31,8 +28,8 @@
 
 | Sprint | Goal | Status |
 |---|---|---|
-| Sprint 01 | Repository Initialization | In Progress |
-| Sprint 02 | Development Environment Setup | Pending |
+| Sprint 01 | Repository Initialization | Complete |
+| Sprint 02 | Development Environment Setup | Complete |
 | Sprint 03 | Database Foundation | Pending |
 | Sprint 04 | Backend Foundation | Pending |
 | Sprint 05 | Frontend Foundation | Pending |
