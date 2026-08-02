@@ -14,7 +14,16 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7, // 7 days
     updateAge: 60 * 60 * 24, // 1 day
   },
-  trustedOrigins: [process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'],
+  trustedOrigins: (request) => {
+    const origin = request?.headers?.get('origin');
+    if (process.env.NODE_ENV === 'development') return [origin || 'http://localhost:3000'];
+    const allowed = [
+      process.env.NEXT_PUBLIC_APP_URL,
+      process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+      origin,
+    ].filter(Boolean) as string[];
+    return allowed;
+  },
   user: {
     additionalFields: {
       phone: {
