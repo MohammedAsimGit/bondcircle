@@ -25,7 +25,6 @@ function LoginForm() {
       const { error: signInError } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: callbackUrl,
       });
 
       if (signInError) {
@@ -34,7 +33,6 @@ function LoginForm() {
       }
 
       router.push(callbackUrl);
-      router.refresh();
     } catch {
       setError('An unexpected error occurred. Please try again.');
     } finally {
