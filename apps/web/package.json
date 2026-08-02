@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "prebuild": "prisma generate --schema=../../packages/database/prisma/schema.prisma",
-    "dev": "next dev --port 3000",
-    "build": "next build",
+    "dev": "dotenv -e ../../.env -- next dev --port 3000",
+    "build": "cross-env NODE_ENV=production dotenv -e ../../.env -- next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
