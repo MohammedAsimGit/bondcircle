@@ -16,17 +16,15 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/auth/forget-password`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            redirectTo: '/reset-password',
-          }),
-        }
-      );
+      const apiBase = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
+      const response = await fetch(`${apiBase}/api/auth/forget-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          redirectTo: '/reset-password',
+        }),
+      });
 
       const data = await response.json();
 
