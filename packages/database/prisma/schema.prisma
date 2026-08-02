@@ -58,7 +58,6 @@ model User {
   email         String     @unique
   username      String     @unique
   phone         String?    @unique
-  passwordHash  String
   image         String?
   emailVerified Boolean    @default(false)
   phoneVerified DateTime?
