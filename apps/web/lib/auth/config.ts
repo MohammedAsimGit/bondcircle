@@ -1,7 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from '@/lib/prisma';
-import { username } from 'better-auth/plugins';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -27,7 +26,6 @@ export const auth = betterAuth({
     ].filter(Boolean) as string[];
     return allowed;
   },
-  plugins: [username()],
   advanced: {
     defaultCookieAttributes: {
       secure: process.env.NODE_ENV === 'production',
