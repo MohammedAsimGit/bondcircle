@@ -60,7 +60,7 @@ model User {
   phone         String?    @unique
   passwordHash  String
   image         String?
-  emailVerified DateTime?
+  emailVerified Boolean    @default(false)
   phoneVerified DateTime?
   status        UserStatus @default(ACTIVE)
   createdAt     DateTime   @default(now())
