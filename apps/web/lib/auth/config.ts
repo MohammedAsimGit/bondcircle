@@ -27,6 +27,9 @@ export const auth = betterAuth({
     return allowed;
   },
   advanced: {
+    database: {
+      generateId: 'uuid',
+    },
     defaultCookieAttributes: {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
