@@ -14,8 +14,8 @@ export const auth = betterAuth({
     enabled: true,
   },
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 1 day
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
   },
   trustedOrigins: (request) => {
     const origin = request?.headers?.get('origin');
@@ -26,20 +26,6 @@ export const auth = betterAuth({
       origin,
     ].filter(Boolean) as string[];
     return allowed;
-  },
-  user: {
-    additionalFields: {
-      phone: {
-        type: 'string',
-        required: false,
-        unique: false,
-      },
-      status: {
-        type: 'string',
-        required: false,
-        defaultValue: 'ACTIVE',
-      },
-    },
   },
   plugins: [username()],
   advanced: {
