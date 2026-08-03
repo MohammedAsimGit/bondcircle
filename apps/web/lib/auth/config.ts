@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from '@/lib/prisma';
+import { sendPasswordResetEmail } from '@/lib/email';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -12,51 +13,32 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     /**
-     * Sends the password reset email.
+     * Fires for every password-reset request.
      *
-     * - Development: logs the reset link to the terminal so the flow can be
-     *   tested without an email provider.
-     * - Production: sends the email via Resend (RESEND_API_KEY) if configured,
-     *   otherwise logs a warning so the failure is observable.
+     * - Production: sends a branded email through Resend via sendPasswordResetEmail().
+     * - Development (no RESEND_API_KEY configured): prints the reset URL to the
+     *   terminal instead so the flow can be tested end-to-end without an email
+     *   provider. Never crashes when email delivery is unavailable.
      *
-     * Credentials are NEVER hardcoded — only environment variables are read.
+     * No credentials are hardcoded — Resend is initialized strictly from the
+     * RESEND_API_KEY / EMAIL_FROM environment variables.
      */
-    sendResetPassword: async ({ user, url }) => {
-      if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line no-console
-        console.log(`[Auth] Password reset requested for: ${user.email}`);
-        // eslint-disable-next-line no-console
-        console.log(`[Auth] Reset link: ${url}`);
-        return;
-      }
-
+    sendResetPassword: async ({ user, url, token }) => {
       if (!process.env.RESEND_API_KEY) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
         // eslint-disable-next-line no-console
-        console.warn('[Auth] RESEND_API_KEY is not set; reset email was NOT sent for', user.email);
+        console.warn(
+          `[Auth] RESEND_API_KEY is not set — reset email NOT sent.\n` +
+            `[Auth] Password Reset URL: ${appUrl}/reset-password?token=${token}`
+        );
         return;
       }
 
-      const from = process.env.EMAIL_FROM || 'BondCircle <noreply@bondcircle.com>';
-
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from,
-          to: user.email,
-          subject: 'Reset your BondCircle password',
-          html: `<p>Hello ${user.name || ''},</p><p>Click <a href="${url}">here</a> to reset your password. This link expires in 1 hour.</p><p>If you didn't request this, you can safely ignore this email.</p>`,
-        }),
+      await sendPasswordResetEmail({
+        email: user.email,
+        name: user.name,
+        resetUrl: url,
       });
-
-      if (!res.ok) {
-        const body = await res.text();
-        // eslint-disable-next-line no-console
-        console.error('[Auth] Failed to send reset email:', res.status, body);
-      }
     },
     resetPasswordTokenExpiresIn: 3600,
   },
