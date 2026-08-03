@@ -1,17 +1,31 @@
 'use client';
 
-import { Moon, Sun, Bell, Search } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { Moon, Sun, Bell, Search, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { APP_NAME } from '@/lib/constants';
+import { useThemeMode } from '@/hooks/use-theme';
+import { authClient } from '@/lib/auth/client';
 import { Avatar } from '@/components/ui/avatar';
 import { Dropdown, DropdownItem } from '@/components/ui/dropdown';
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+  const { isDark, setTheme, mounted } = useThemeMode();
+  const [signingOut, setSigningOut] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  const handleSignOut = async () => {
+    setSigningOut(true);
+    try {
+      await authClient.signOut();
+      router.push('/login');
+      router.refresh();
+    } finally {
+      setSigningOut(false);
+    }
+  };
+
+  const handleThemeToggle = () => setTheme(isDark ? 'light' : 'dark');
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-4 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/80 sm:px-6">
@@ -43,10 +57,10 @@ export function Navbar() {
 
         {mounted && (
           <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={handleThemeToggle}
             className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
           >
-            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
         )}
 
@@ -54,10 +68,16 @@ export function Navbar() {
           trigger={<Avatar name="User" size="sm" className="cursor-pointer" />}
           align="right"
         >
-          <DropdownItem onClick={() => {}}>Profile</DropdownItem>
-          <DropdownItem onClick={() => {}}>Settings</DropdownItem>
+          <DropdownItem onClick={() => router.push('/profile')}>Profile</DropdownItem>
+          <DropdownItem onClick={() => router.push('/settings')}>Settings</DropdownItem>
           <div className="my-1 border-t border-slate-200 dark:border-slate-700" />
-          <DropdownItem onClick={() => {}}>Sign out</DropdownItem>
+          <DropdownItem
+            onClick={handleSignOut}
+            className="text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
+          >
+            {signingOut && <LogOut className="mr-2 h-4 w-4 animate-pulse" />}
+            {signingOut ? 'Signing out...' : 'Sign out'}
+          </DropdownItem>
         </Dropdown>
       </div>
     </header>

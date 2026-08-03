@@ -49,7 +49,7 @@ function ToastContainer() {
           className={cn(
             'flex items-center gap-3 rounded-xl border bg-white px-4 py-3 shadow-xl dark:bg-slate-800',
             'border-slate-200 dark:border-slate-700',
-            'animate-in slide-in-from-right'
+            'animate-slide-up'
           )}
         >
           {icons[t.type]}
