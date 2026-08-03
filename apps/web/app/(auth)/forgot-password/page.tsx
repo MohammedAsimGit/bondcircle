@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { authClient } from '@/lib/auth/client';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -16,20 +17,15 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      const apiBase = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
-      const response = await fetch(`${apiBase}/api/auth/forget-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          redirectTo: '/reset-password',
-        }),
+      const redirectTo = `${process.env.NEXT_PUBLIC_APP_URL || window.location.origin}/reset-password`;
+
+      const { error: resetError } = await authClient.requestPasswordReset({
+        email,
+        redirectTo,
       });
 
-      const data = await response.json();
-
-      if (!response.ok || data.error) {
-        setError(data.error?.message || 'Failed to send reset email');
+      if (resetError) {
+        setError(resetError.message || 'Failed to send reset email');
         return;
       }
 

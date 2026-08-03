@@ -9,19 +9,20 @@ function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const tokenError = searchParams.get('error');
 
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  if (!token) {
+  if (!token || tokenError === 'INVALID_TOKEN') {
     return (
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-900">BondCircle</h1>
-        <h2 className="mt-6 text-2xl font-semibold text-gray-700">Invalid reset link</h2>
+        <h2 className="mt-6 text-2xl font-semibold text-gray-700">Invalid or expired reset link</h2>
         <p className="mt-2 text-sm text-gray-600">
-          This password reset link is invalid or has expired.
+          This password reset link is invalid or has expired. Please request a new one.
         </p>
         <Link
           href="/forgot-password"
