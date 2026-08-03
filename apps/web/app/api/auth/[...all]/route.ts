@@ -3,17 +3,34 @@ import { NextRequest, NextResponse } from 'next/server';
 
 async function handler(request: NextRequest) {
   try {
-    // eslint-disable-next-line no-console
-    console.log('[Auth] Request:', request.method, request.url);
     const response = await auth.handler(request);
-    // eslint-disable-next-line no-console
-    console.log('[Auth] Response status:', response.status);
-    return response;
+
+    const nextResponse = new NextResponse(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: new Headers(),
+    });
+
+    const setCookieHeaders = response.headers.getSetCookie?.() ?? [];
+    if (setCookieHeaders.length > 0) {
+      for (const header of setCookieHeaders) {
+        nextResponse.headers.append('set-cookie', header);
+      }
+    } else {
+      const single = response.headers.get('set-cookie');
+      if (single) {
+        nextResponse.headers.set('set-cookie', single);
+      }
+    }
+
+    response.headers.forEach((value, key) => {
+      if (key.toLowerCase() !== 'set-cookie') {
+        nextResponse.headers.set(key, value);
+      }
+    });
+
+    return nextResponse;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('[Auth] FATAL ERROR:', error);
-    // eslint-disable-next-line no-console
-    console.error('[Auth] Error stack:', error instanceof Error ? error.stack : 'No stack');
     return NextResponse.json(
       { error: 'Internal server error', details: String(error) },
       { status: 500 }

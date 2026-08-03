@@ -5,7 +5,9 @@ const authRoutes = ['/login', '/register', '/forgot-password', '/reset-password'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const sessionToken = request.cookies.get('better-auth.session_token')?.value;
+  const sessionToken =
+    request.cookies.get('better-auth.session_token')?.value ||
+    request.cookies.get('__Secure-better-auth.session_token')?.value;
 
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
